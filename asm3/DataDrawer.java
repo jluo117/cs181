@@ -57,7 +57,8 @@ public class DataDrawer {
 		GraphDrawer.Node dicNode =  myTable.get(myObj.obj);
 		if (dicNode != null){
 			return dicNode;
-		} 
+		}
+		
 		GraphDrawer.Node newNode = myDrawer.addNode(myObj.obj.getClass().getName());
 		//myNodeTable.add(checkNode);
 		//return newNode;
@@ -74,6 +75,7 @@ public class DataDrawer {
       
                }
                else{
+            	if (myObj.obj != n.value.obj) {
                	GraphDrawer.Node realObj = addObjectReal(n.value);
  				
                	if (realObj == null){
@@ -82,9 +84,15 @@ public class DataDrawer {
                	else{
                	newNode.addPtrField(n.name,realObj); 
                }
+            	}
+            	else {
+            		//GraphDrawer.Node circleNode = myDrawer.addNode(n.name);
+            		newNode.addPtrField(n.name,newNode);
+            	}
                }
         	}
         	myTable.put(myObj.obj,newNode);
+        	
         	return newNode;
 
 	}
