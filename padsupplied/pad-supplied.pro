@@ -73,6 +73,212 @@ list_append(NumVal,[],List),
 indict([Head|Tail],Dict),
 isWord(Board,X,Y,Tail,List).
 
+isboggleword(Board,node(V,true,_,_),Word):-
+boggleletter(Board,_,_,V),
+list_append(V,[],Word).
+
+isboggleword(Board,node(V,_,D,_),Word):-
+boggleletter(Board,X,Y,V),
+list_append(V,[],NWord),
+NumVal is (X + (Y * 10)),
+list_append(NumVal,[],List),
+traversalTree(Board,D,X,Y,Word,NWord,List).
+
+isboggleword(Board,node(_,_,_,L) , Word):-
+isboggleword(Board,L,Word).
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X + 1,
+NewY == Y,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X + 1,
+NewY == Y,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetY is Y + 1,
+NewY == TargetY,
+NewX == X,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetY is Y + 1,
+NewY == TargetY,
+NewX == X,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X - 1,
+NewY == Y,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X - 1,
+NewY == Y,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetY is Y - 1,
+NewY == TargetY,
+NewX == X,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetY is Y - 1,
+NewY == TargetY,
+NewX == X,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X + 1,
+TargetY is Y + 1,
+NewY == TargetY,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X + 1,
+TargetY is Y + 1,
+NewX == TargetX,
+NewY == TargetY,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X - 1,
+TargetY is Y - 1,
+NewY == TargetY,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X - 1,
+TargetY is Y - 1,
+NewX == TargetX,
+NewY == TargetY,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X - 1,
+TargetY is Y + 1,
+NewY == TargetY,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X - 1,
+TargetY is Y + 1,
+NewX == TargetX,
+NewY == TargetY,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+traversalTree(Board,node(V,_,D,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X + 1,
+TargetY is Y - 1,
+NewY == TargetY,
+NewX == TargetX,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+list_append(V,[],NChar),
+append(CurWord,NChar,NWord),
+traversalTree(Board,D,NewX,NewY,Word,NWord,NList).
+
+traversalTree(Board,node(V,true,_,_),X,Y,Word,CurWord,List):-
+boggleletter(Board,NewX,NewY,V),
+TargetX is X + 1,
+TargetY is Y - 1,
+NewX == TargetX,
+NewY == TargetY,
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(V,[],NChar),
+append(CurWord,NChar,Word).
+
+
+traversalTree(Board,node(_,_,_,R),X,Y,Word,CurWord,List):-
+traversalTree(Board,R,X,Y,Word,CurWord,List).
+
+
 
 isWord(Board,X,Y,[Head|Tail],List):-
 boggleletter(Board,NewX,NewY,Head),
