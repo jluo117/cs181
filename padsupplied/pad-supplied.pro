@@ -66,70 +66,97 @@ drawboard([X|Y],I) :- write(X), II is I-1, drawboard(Y,II).
 % boggleword(+board,?word)
 boggleword(B,X) :- loaddict(bogwords,D), isboggleword(B,D,X).
 
-isboggleword(Board,_,[Head|Tail]):-
+isboggleword(Board,Dict,[Head|Tail]):-
 boggleletter(Board,X,Y,Head),
-isWord(Board,X,Y,Tail).
+NumVal is (X + (Y * 10)),
+list_append(NumVal,[],List),
+indict([Head|Tail],Dict),
+isWord(Board,X,Y,Tail,List).
 
 
-isWord(Board,X,Y,[Head|Tail]):-
+isWord(Board,X,Y,[Head|Tail],List):-
 boggleletter(Board,NewX,NewY,Head),
 TargetX is X + 1,
 NewY == Y,
 NewX == TargetX,
-isWord(Board,NewX,Y,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,NewX,Y,Tail,NList).
 
-isWord(Board,X,Y,[Head|Tail]):-
+isWord(Board,X,Y,[Head|Tail],List):-
 boggleletter(Board,NewX,NewY,Head),
 TargetY is Y + 1,
 X ==  NewX,
 NewY == TargetY,
-isWord(Board,X,NewY,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,X,NewY,Tail,NList).
 
-isWord(Board,X,Y,[Head|Tail]):-
+isWord(Board,X,Y,[Head|Tail],List):-
 boggleletter(Board,NewX,NewY,Head),
 TargetX is X - 1,
 NewY == Y,
 NewX == TargetX,
-isWord(Board,NewX,Y,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,NewX,Y,Tail,NList).
 
-isWord(Board,X,Y,[Head|Tail]) :-
+isWord(Board,X,Y,[Head|Tail],List) :-
 boggleletter(Board,NewX,NewY,Head),
 TargetY is Y - 1,
 NewX == X,
 NewY == TargetY,
-isWord(Board,X,NewY,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,X,NewY,Tail,NList).
 
-isWord(Board,X,Y,[Head|Tail]) :-
+isWord(Board,X,Y,[Head|Tail],List) :-
 boggleletter(Board,NewX,NewY,Head),
 TargetX is X + 1,
 TargetY is Y + 1,
 NewY == TargetY,
 NewX == TargetX,
-isWord(Board,NewX,NewY,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,NewX,NewY,Tail,NList).
 
-isWord(Board,X,Y,[Head|Tail]):-
+isWord(Board,X,Y,[Head|Tail],List):-
 boggleletter(Board,NewX,NewY,Head),
 TargetX is X - 1,
 TargetY is Y - 1,
 NewX == TargetX,
 NewY == TargetY,
-isWord(Board,NewX,NewY,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,NewX,NewY,Tail,NList).
 
-isWord(Board,X,Y,[Head|Tail]):-
+isWord(Board,X,Y,[Head|Tail],List):-
 boggleletter(Board,NewX,NewY,Head),
 TargetX is X + 1,
 TargetY is Y - 1,
 NewX == TargetX,
 NewY == TargetY,
-isWord(Board,NewX,NewY,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,NewX,NewY,Tail,NList).
 
-isWord(Board,X,Y,[Head|Tail]):-
+isWord(Board,X,Y,[Head|Tail],List):-
 boggleletter(Board,NewX,NewY,Head),
 NewX == X - 1,
 NewY == Y + 1,
-isWord(Board,NewX,NewY,Tail).
+NumVal is (NewX + (NewY * 10)),
+notInList(List,NumVal),
+list_append(NumVal,List,NList),
+isWord(Board,NewX,NewY,Tail,NList).
 
-isWord(_,_,_,[]).
+isWord(_,_,_,[],_).
 
 % below is only needed for Q3
 %---------------------
@@ -153,3 +180,15 @@ removeHelper([H|T], InputList,OutputList):-
 removeHelper([H|T],InputList,OutputList):-
 	removeHelper(T,[H|InputList],OutputList).
 
+notInList([Head|Tail],Cord):-
+Cord =\= Head,
+notInList(Tail,Cord).
+
+notInList([],_).
+
+
+list_member(X,[X|_]).
+list_member(X,(_|Tail)):-
+list_member(X,Tail).
+list_append(A,T,T):- list_member(A,T),!.
+list_append(A,Tail,[A|Tail]).

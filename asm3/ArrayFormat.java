@@ -17,16 +17,20 @@ public class ArrayFormat implements Formatter{
 
 	}
 	public String className(GenObject info){
-		Class cls = info.obj.getClass();
-		return cls.getName();
+		Class cls = info.obj.getClass().getComponentType();
+		return cls.getName() + "[]";
 	}
 	public List<NamedObject> getFields(GenObject info){
 		List myList = new LinkedList<NamedObject>();
 		for (int i = 0; i < Array.getLength(info.obj); i++){
 			
 			Object aryObj = Array.get(info.obj,i);
+			if (aryObj == null) {
+				continue;
+			}
 			GenObject newGen = new GenObject(aryObj,aryObj.getClass());
-			NamedObject newObj = new NamedObject(className(newGen),newGen);
+			String myClassName = "[" + Integer.toString(i) + "]";
+			NamedObject newObj = new NamedObject(myClassName,newGen);
 			myList.add(newObj);
 			//myList.addAll(this.superList(aryObj.getClass().getSuperclass(),newGen));
 			// try{
@@ -45,7 +49,7 @@ public class ArrayFormat implements Formatter{
 			// }
 
 		}
-		System.out.println(myList.size());
+		//System.out.println(myList.size());
 		return myList;
 	}
 	private List<NamedObject> superList(Class myClass, GenObject info){

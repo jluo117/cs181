@@ -7,7 +7,7 @@ public class DataDrawer {
 		myDrawer = drawer;
 		formatters = new LinkedList<Formatter>();
 		myTable = new HashMap <Object,GraphDrawer.Node> ();
-		//myNodeTable = new HashSet<GraphDrawer.Node>();
+		myNodeTable = new HashSet<Object>();
 	}
 
 	// Multiple formatters might be used.  When an object is to be
@@ -59,7 +59,7 @@ public class DataDrawer {
 			return dicNode;
 		}
 		
-		GraphDrawer.Node newNode = myDrawer.addNode(myObj.obj.getClass().getName());
+		GraphDrawer.Node newNode = myDrawer.addNode(matched.className(myObj));
 		//myNodeTable.add(checkNode);
 		//return newNode;
 		//myTable.put(myObj.obj,newNode);
@@ -75,9 +75,10 @@ public class DataDrawer {
       
                }
                else{
-            	if (myObj.obj != n.value.obj) {
+            	if (!myNodeTable.contains(n.value.obj)) {
+            	myNodeTable.add(n.value.obj);
                	GraphDrawer.Node realObj = addObjectReal(n.value);
- 				
+ 				myNodeTable.remove(n.value.obj);
                	if (realObj == null){
                		newNode.addValueField(n.name,"");
                	}
@@ -98,7 +99,8 @@ public class DataDrawer {
 	}
 	private LinkedList getFields;
 	private Map <Object,GraphDrawer.Node> myTable;
-	//private Set <GraphDrawer.Node> myNodeTable;
+	//private Map <Object,GraphDrawer.Node> cycleTable;
+	private Set <Object> myNodeTable;
 	private GraphDrawer myDrawer;
 	private LinkedList<Formatter> formatters;
   
