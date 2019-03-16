@@ -378,13 +378,8 @@ allbogglewords(B,X) :- loaddict(bogwords,D),
 	removedup(XL,XL2), converttostr(XL2,X).
 
 removedup(InputList,OutputList):-
-	removeHelper(InputList,[],OutputList).
-removeHelper([],InputList,InputList).
-removeHelper([H|T], InputList,OutputList):-
-	member(H,InputList),
-	removeHelper(T,InputList,OutputList).
-removeHelper([H|T],InputList,OutputList):-
-	removeHelper(T,[H|InputList],OutputList).
+	sort(InputList,OutputList).
+
 
 notInList([Head|Tail],Cord):-
 Cord =\= Head,
