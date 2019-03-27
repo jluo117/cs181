@@ -1,0 +1,1 @@
+The $0 is related to the inner class of an outer class. The reason some varibles have two is because of how thier is mutiple varibles and each has thier own inner class
